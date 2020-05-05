@@ -1,0 +1,64 @@
+.datepicker {
+  position: relative;
+}
+
+.datepicker__calendar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  color: #26313D;
+  min-width: 300px;
+}
+
+.datepicker__calendar.is-hidden {
+  display: none;
+}
+
+.datepicker__calendar-month-wrap {
+  position: relative;
+}
+
+.datepicker__calendar-month {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #E6EBE0;
+}
+
+// .datepicker__calendar-month.is-hidden {
+//   visibility: hidden;
+//   pointer-events: none;
+// }
+
+.datepicker__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 30px;
+}
+
+.datepicker__month {
+  width: 100%;
+}
+
+.datepicker__day {
+  text-align: center;
+}
+
+.datepicker__day.is-active {
+  background-color: #9bc1bc;
+
+}
+
+.datepicker__month-title {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
