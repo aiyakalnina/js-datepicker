@@ -1,20 +1,14 @@
 export { CalendarMonthView };
 
 class CalendarMonthView {
-  constructor(monthName, firstWeekdayOfMonth, numberOfDays, year, isCurrentMonth, dayNumToday) {
-    this.monthName = monthName;
-    this.numberOfDays = numberOfDays;
-    this.firstWeekdayOfMonth = firstWeekdayOfMonth;
-    this.year = year;
-    this.isCurrentMonth = isCurrentMonth;
-    this.dayNumToday = dayNumToday;
-    this.monthView = this.createCalendarMonthHtml();
+  constructor(month) {
+    this.month = month;
   }
 
   createDayCells() {
     let dayCells = [];
 
-    for (let i = 1; i <= this.firstWeekdayOfMonth; i++) {
+    for (let i = 1; i <= this.month.firstWeekdayOfMonth(); i++) {
       let emptyDayCell = `
           <td>
             <span></span>
@@ -23,17 +17,17 @@ class CalendarMonthView {
       dayCells.push(emptyDayCell);
     }
 
-    for (let i = 1; i <= this.numberOfDays; i++) {
+    for (let i = 1; i <= this.month.howManyDays(); i++) {
       let dayCellClass = "datepicker__day";
 
-      if (this.isCurrentMonth && i === this.dayNumToday) {
+      if (this.month.checkIfCurrentMonth() && i === this.month.checkWhatDayNumToday()) {
         dayCellClass = dayCellClass.concat(' ', 'is-active');
       } else {
         dayCellClass = "datepicker__day";
       }
 
       let dayCell = `
-          <td class="${dayCellClass}" data-date="${i} ${this.monthName}, ${this.year}">
+          <td class="${dayCellClass}" data-date="${i} ${this.month.monthName()}, ${this.month.year}">
             <span>${i}</span>
           </td>
         `
@@ -55,11 +49,8 @@ class CalendarMonthView {
   createCalendarMonthHtml() {
     let calendarMonthHtml = document.createElement('div');
     calendarMonthHtml.classList.add('datepicker__calendar-month');
-    // if (!this.isCurrentMonth) {
-    //   calendarMonthHtml.classList.add('is-hidden');
-    // }
 
-    let dayCells = this.createDayCells(this.firstWeekdayOfMonth, this.numberOfDays, this.year);
+    let dayCells = this.createDayCells(this.month.firstWeekdayOfMonth(), this.month.checkWhatDayNumToday(), this.month.year);
     let weekRows = this.createRowsFromDayCells(dayCells);
 
     let calendarHead = `
@@ -77,7 +68,7 @@ class CalendarMonthView {
       `
 
     calendarMonthHtml.innerHTML = `
-        <div class="datepicker__month-title">${this.monthName} ${this.year}</div>
+        <div class="datepicker__month-title">${this.month.monthName()} ${this.month.year}</div>
         <table class="datepicker__month">
           ${calendarHead}
           <tbody>

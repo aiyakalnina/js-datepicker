@@ -16,10 +16,10 @@ DatePicker = class {
     id,
     numberOfMonthsInFuture = 12,
     numberOfMonthsInPast = 12,
-    fromYear = 2019,
-    fromMonth = 0,
-    tillYear = 2020,
-    tillMonth = 11,
+    // fromYear = 2019,
+    // fromMonth = 0,
+    // tillYear = 2020,
+    // tillMonth = 11,
   }) {
     this.dateInput = document.getElementById(id);
     this.numberOfMonthsInFuture = numberOfMonthsInFuture;
@@ -27,41 +27,6 @@ DatePicker = class {
     this.today = new Date();
     this.currentMonthIndex = this.today.getMonth();
     this.currentYear = this.today.getFullYear();
-    this.currentMonth = new CalendarMonth(this.currentYear, this.currentMonthIndex, this.today);
-    this.months = this.createMonthsFromSettings();
-  }
-
-  createMonthsFromSettings() {
-    let calendarMonths = [];
-    let currentMonthIndex = this.currentMonthIndex;
-    let currentYear = this.currentYear;
-    let numberOfMonthsInPast = this.numberOfMonthsInPast;
-    let numberOfMonthsInCalendar = numberOfMonthsInPast + this.numberOfMonthsInFuture;
-    let numberOfYearsInPast = numberOfMonthsInPast / 12;
-
-    function getYearFrom() {
-      return (currentYear - numberOfYearsInPast);
-    }
-
-    function getMonthFrom() {
-      return currentMonthIndex - (12 - (numberOfMonthsInPast / numberOfYearsInPast));
-    }
-
-    let year = getYearFrom();
-    let monthIndex = getMonthFrom();
-
-    while (calendarMonths.length < numberOfMonthsInCalendar) {
-      calendarMonths.push(new CalendarMonth(year, monthIndex, this.today));
-      monthIndex++;
-
-      if (monthIndex > 11) {
-        year++;
-        monthIndex = 0;
-      }
-      console.log(year, monthIndex);
-    }
-
-    return calendarMonths;
   }
 
   //------------------------------
@@ -84,71 +49,52 @@ DatePicker = class {
     buttonNext.textContent = "Next";
     datepickerNav.append(buttonNext);
 
-    let monthView = new CalendarMonthView(
-      this.currentMonth.monthName,
-      this.currentMonth.firstWeekdayOfMonth,
-      this.currentMonth.numberOfDays,
-      this.currentMonth.year,
-      this.currentMonth.isCurrentMonth,
-      this.currentMonth.dayNumToday
-    );
-    calendarMonthWrap.appendChild(monthView.monthView);
 
     calendarHtml.appendChild(datepickerNav);
     calendarHtml.appendChild(calendarMonthWrap);
 
     // not sure why I can't use this.currentMonthIndex directly here, comes back as undefined
     let currentMonthIndex = this.currentMonthIndex;
-    let months = this.months;
-    let yearInView = this.currentYear;
-    let monthInViewIndex = monthInViewFromAllMonths();
+    let currentYear = this.currentYear;
+    let today = this.today;
     let monthsInPast = this.numberOfMonthsInPast;
-    // let monthsInFuture = this.numberOfMonthsInFuture;
 
-    console.log(this.months);
-
-    function monthInViewFromAllMonths() {
-      let monthInViewIndex;
-      console.log(months);
-
-      months.forEach((month, index) => {
-        if (month.year === yearInView && month.monthIndex === currentMonthIndex) {
-          monthInViewIndex = index;
-        }
-      });
-
-      console.log(monthInViewIndex);
-      return monthInViewIndex;
-    }
+    addNewMonthViewToCalendar();
 
     function addNewMonthViewToCalendar() {
-      let month = months[monthInViewIndex];
-      let newMonthView = new CalendarMonthView(
-        month.monthName,
-        month.firstWeekdayOfMonth,
-        month.numberOfDays,
-        month.year,
-        month.isCurrentMonth,
-        month.dayNumToday
-      );
-      monthView.monthView.parentNode.replaceChild(newMonthView.monthView, monthView.monthView);
-      monthView = newMonthView;
+      let month = new CalendarMonth(currentYear, currentMonthIndex, today);
+      let newMonthView = new CalendarMonthView(month);
+      let calendarMonth = calendarMonthWrap.querySelector('.datepicker__calendar-month');
+
+      if (calendarMonth) {
+        calendarMonthWrap.querySelector('.datepicker__calendar-month').remove();
+      }
+
+      calendarMonthWrap.appendChild(newMonthView.createCalendarMonthHtml());
     }
 
     buttonPrev.addEventListener('click', function () {
-      if (monthInViewIndex >= currentMonthIndex - monthsInPast) {
-        monthInViewIndex--;
-        addNewMonthViewToCalendar();
+      currentMonthIndex--;
+
+      if (currentMonthIndex < 0) {
+        currentMonthIndex = 11;
+        currentYear--;
       }
-      console.log(monthInViewIndex, currentMonthIndex, currentMonthIndex - monthsInPast);
+
+      addNewMonthViewToCalendar();
+      console.log(currentMonthIndex);
     });
 
     buttonNext.addEventListener('click', function () {
-      if (monthInViewIndex < months.length - 1) {
-        monthInViewIndex++;
-        addNewMonthViewToCalendar();
+      currentMonthIndex++;
+
+      if (currentMonthIndex > 11) {
+        currentMonthIndex = 0;
+        currentYear++;
       }
-      console.log(monthInViewIndex);
+
+      addNewMonthViewToCalendar();
+      console.log(currentMonthIndex);
     });
 
     return calendarHtml;
@@ -182,9 +128,6 @@ const setupDatepicker = (calendarSettings) => {
   if (typeof DatePicker !== 'undefined') {
     const datepicker = new DatePicker(calendarSettings);
     datepicker.setup();
-
-    //jsut for debugging
-    datepicker.createMonthsFromSettings();
   }
 }
 

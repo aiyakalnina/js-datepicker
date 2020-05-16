@@ -6,11 +6,6 @@ class CalendarMonth {
     this.year = year;
     this.monthIndex = month;
     this.dateToday = today;
-    this.monthName = this.monthName();
-    this.numberOfDays = this.howManyDays();
-    this.firstWeekdayOfMonth = this.firstWeekdayOfMonth();
-    this.isCurrentMonth = this.checkIfCurrentMonth();
-    this.dayNumToday = this.checkWhatDayNumToday();
   }
 
   checkIfCurrentMonth() {
