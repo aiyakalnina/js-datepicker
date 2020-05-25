@@ -1,14 +1,21 @@
+$nav-height: 40px;
+
 .datepicker {
   position: relative;
 }
 
+.datepicker__input {
+  border: none;
+  padding: 6px 10px;
+  font-size: 17px;
+}
+
 .datepicker__calendar {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 10px);
   left: 0;
-  background-color: #fff;
   color: #26313D;
-  min-width: 300px;
+  width: 304px;
 }
 
 .datepicker__calendar.is-hidden {
@@ -24,41 +31,60 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #E6EBE0;
+  background-color: #E1F2FE;
+  border-radius: 4px;
 }
-
-// .datepicker__calendar-month.is-hidden {
-//   visibility: hidden;
-//   pointer-events: none;
-// }
 
 .datepicker__nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px;
   position: absolute;
   z-index: 100;
   width: 100%;
-  height: 30px;
+  height: $nav-height;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .datepicker__month {
   width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+
+  tr {
+    display: flex;
+  }
+
+  td,
+  th {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  th {
+    font-weight: 400;
+  }
 }
 
+
 .datepicker__day {
-  text-align: center;
+  background-color: #fff;
 }
 
 .datepicker__day.is-active {
-  background-color: #9bc1bc;
+  background-color: #B2B1CF;
 
 }
 
 .datepicker__month-title {
-  height: 30px;
+  height: $nav-height;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
 }
