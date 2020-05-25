@@ -61,20 +61,13 @@ DatePicker = class {
       calendarMonthWrap.appendChild(newMonthView.createCalendarMonthHtml());
     }
 
-    buttonPrev.addEventListener('click', function () {
-      currentMonthIndex--;
+    function changeMonth(value) {
+      currentMonthIndex = currentMonthIndex + value;
 
       if (currentMonthIndex < 0) {
         currentMonthIndex = 11;
         currentYear--;
       }
-
-      addNewMonthViewToCalendar();
-      console.log(currentMonthIndex);
-    });
-
-    buttonNext.addEventListener('click', function () {
-      currentMonthIndex++;
 
       if (currentMonthIndex > 11) {
         currentMonthIndex = 0;
@@ -82,12 +75,18 @@ DatePicker = class {
       }
 
       addNewMonthViewToCalendar();
-      console.log(currentMonthIndex);
+    }
+
+    buttonPrev.addEventListener('click', function () {
+      changeMonth(-1);
+    });
+
+    buttonNext.addEventListener('click', function () {
+      changeMonth(1);
     });
 
     return calendarHtml;
   }
-  //------------------------------------------------------------
 
   setup() {
     let calendar = this.createCalendarHtml();
