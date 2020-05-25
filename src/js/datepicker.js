@@ -1,17 +1,7 @@
 import { CalendarMonth } from './calendar-month.js';
 import { CalendarMonthView } from './calendar-month-view.js';
 
-let DatePicker;
-
-const dateInputSupported = () => {
-  let el = document.createElement('input');
-  try {
-    el.type = 'date';
-  } catch (e) { }
-  return el.type == 'date';
-}
-
-DatePicker = class {
+class DatePicker {
   constructor(id) {
     this.dateInput = document.getElementById(id);
     this.today = new Date();
@@ -19,7 +9,6 @@ DatePicker = class {
     this.currentYear = this.today.getFullYear();
   }
 
-  //------------------------------
   createCalendarHtml() {
     let calendarHtml = document.createElement('div');
     calendarHtml.classList.add('datepicker__calendar', 'is-hidden');
@@ -37,12 +26,9 @@ DatePicker = class {
     buttonNext.setAttribute.type = 'button';
     buttonNext.textContent = "Next";
     datepickerNav.append(buttonNext);
-
-
     calendarHtml.appendChild(datepickerNav);
     calendarHtml.appendChild(calendarMonthWrap);
 
-    // not sure why I can't use this.currentMonthIndex directly here, comes back as undefined
     let currentMonthIndex = this.currentMonthIndex;
     let currentYear = this.currentYear;
     let today = this.today;
@@ -119,9 +105,5 @@ const setupDatepicker = (calendarSettings) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // only create a class if date input is not supported
-  // change to NOT
-  if (dateInputSupported()) {
-    setupDatepicker('example-datepicker');
-  }
+  setupDatepicker('example-datepicker');
 });
