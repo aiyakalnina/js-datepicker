@@ -12,18 +12,8 @@ const dateInputSupported = () => {
 }
 
 DatePicker = class {
-  constructor({
-    id,
-    numberOfMonthsInFuture = 12,
-    numberOfMonthsInPast = 12,
-    // fromYear = 2019,
-    // fromMonth = 0,
-    // tillYear = 2020,
-    // tillMonth = 11,
-  }) {
+  constructor(id) {
     this.dateInput = document.getElementById(id);
-    this.numberOfMonthsInFuture = numberOfMonthsInFuture;
-    this.numberOfMonthsInPast = numberOfMonthsInPast;
     this.today = new Date();
     this.currentMonthIndex = this.today.getMonth();
     this.currentYear = this.today.getFullYear();
@@ -31,7 +21,6 @@ DatePicker = class {
 
   //------------------------------
   createCalendarHtml() {
-    console.log(this.numberOfMonthsInFuture);
     let calendarHtml = document.createElement('div');
     calendarHtml.classList.add('datepicker__calendar', 'is-hidden');
     let calendarMonthWrap = document.createElement('div');
@@ -57,7 +46,6 @@ DatePicker = class {
     let currentMonthIndex = this.currentMonthIndex;
     let currentYear = this.currentYear;
     let today = this.today;
-    let monthsInPast = this.numberOfMonthsInPast;
 
     addNewMonthViewToCalendar();
 
@@ -135,14 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // only create a class if date input is not supported
   // change to NOT
   if (dateInputSupported()) {
-    setupDatepicker({
-      id: 'example-datepicker',
-      numberOfMonthsInFuture: 12,
-      numberOfMonthsInPast: 12,
-      // fromYear: 2019,
-      // fromMonth: 0,
-      // tillYear: 2020,
-      // tillMonth: 11,
-    });
+    setupDatepicker('example-datepicker');
   }
 });
