@@ -20,12 +20,12 @@ class DatePicker {
     buttonPrev.classList.add('datepicker__nav-prev');
     buttonPrev.setAttribute.type = 'button';
     buttonPrev.textContent = "Prev";
-    datepickerNav.append(buttonPrev);
+    datepickerNav.appendChild(buttonPrev);
     let buttonNext = document.createElement('button');
     buttonNext.classList.add('datepicker__nav-next');
     buttonNext.setAttribute.type = 'button';
     buttonNext.textContent = "Next";
-    datepickerNav.append(buttonNext);
+    datepickerNav.appendChild(buttonNext);
     calendarHtml.appendChild(datepickerNav);
     calendarHtml.appendChild(calendarMonthWrap);
 

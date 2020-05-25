@@ -9,28 +9,25 @@ class CalendarMonthView {
     let dayCells = [];
 
     for (let i = 1; i <= this.month.firstWeekdayOfMonth(); i++) {
-      let emptyDayCell = `
-          <td>
-            <span></span>
-          </td>
-        `
+      let emptyDayCell = document.createElement('td');
       dayCells.push(emptyDayCell);
     }
 
     for (let i = 1; i <= this.month.howManyDays(); i++) {
-      let dayCellClass = "datepicker__day";
-
+      let dayCell = document.createElement('td');
+      dayCell.classList.add('datepicker__day');
       if (this.month.checkIfCurrentMonth() && i === this.month.checkWhatDayNumToday()) {
-        dayCellClass = dayCellClass.concat(' ', 'is-active');
-      } else {
-        dayCellClass = "datepicker__day";
+        dayCell.classList.add('is-active');
       }
+      dayCell.dataset.date = `${i} ${this.month.monthName()}, ${this.month.year}`
+      dayCell.innerHTML = `<span>${i}</span>`
 
-      let dayCell = `
-          <td class="${dayCellClass}" data-date="${i} ${this.month.monthName()}, ${this.month.year}">
-            <span>${i}</span>
-          </td>
-        `
+      dayCell.addEventListener('click', function (e) {
+        let selectedCell = e.target.closest('.datepicker__day');
+        let selectedDate = selectedCell.getAttribute('data-date');
+        console.log(selectedDate);
+      });
+
       dayCells.push(dayCell);
     }
 
@@ -40,42 +37,55 @@ class CalendarMonthView {
   createRowsFromDayCells(dayCellsHtml) {
     var weekRowsArray = [];
     for (var i = 0; i < dayCellsHtml.length; i += 7) {
-      weekRowsArray.push(`<tr> ${dayCellsHtml.slice(i, i + 7).join('\n')} </tr>`);
+      let weekRow = document.createElement('tr');
+      let weekRowDays = dayCellsHtml.slice(i, i + 7);
+
+      for (var j = 0; j < weekRowDays.length; j++) {
+        weekRow.append(weekRowDays[j]);
+      }
+      weekRowsArray.push(weekRow);
     }
-    let weekRows = weekRowsArray.join('\n');
-    return weekRows;
+    return weekRowsArray;
   }
 
   createCalendarMonthHtml() {
+    let weekdayNames = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
     let calendarMonthHtml = document.createElement('div');
     calendarMonthHtml.classList.add('datepicker__calendar-month');
 
-    let dayCells = this.createDayCells(this.month.firstWeekdayOfMonth(), this.month.checkWhatDayNumToday(), this.month.year);
+    let dayCells = this.createDayCells();
     let weekRows = this.createRowsFromDayCells(dayCells);
 
-    let calendarHead = `
-        <thead>
-          <tr>
-            <th>Mo</th>
-            <th>Tu</th>
-            <th>We</th>
-            <th>Th</th>
-            <th>Fr</th>
-            <th>Sa</th>
-            <th>Su</th>
-          </tr>
-        </thead>
-      `
+    let calendarHead = document.createElement('thead');
+    let calendarHeadRow = document.createElement('tr');
 
-    calendarMonthHtml.innerHTML = `
-        <div class="datepicker__month-title">${this.month.monthName()} ${this.month.year}</div>
-        <table class="datepicker__month">
-          ${calendarHead}
-          <tbody>
-            ${weekRows}
-          </tbody>
-        </table>
-    `;
+    weekdayNames.forEach((name) => {
+      let weekDayNameCell = document.createElement('th');
+      weekDayNameCell.append(name);
+      calendarHeadRow.append(weekDayNameCell);
+    });
+
+    calendarHead.append(calendarHeadRow);
+
+    let monthTitle = document.createElement('div');
+    monthTitle.classList.add('datepicker__month-title');
+    monthTitle.innerText = `${this.month.monthName()} ${this.month.year}`
+
+    let monthTable = document.createElement('table');
+    monthTable.classList.add('datepicker__month');
+    monthTable.append(calendarHead);
+
+    let tableBody = document.createElement('tbody');
+
+    for (var i = 0; i < weekRows.length; i++) {
+      tableBody.append(weekRows[i]);
+    }
+
+    monthTable.append(tableBody);
+
+    calendarMonthHtml.append(monthTitle);
+    calendarMonthHtml.append(monthTable);
 
     return calendarMonthHtml;
   }
