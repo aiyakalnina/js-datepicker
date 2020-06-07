@@ -1,5 +1,6 @@
 import { CalendarMonth } from './calendar-month.js';
 import { CalendarMonthView } from './calendar-month-view.js';
+import { eventEmitter } from './event-emitter.js';
 
 class DatePicker {
   constructor(id) {
@@ -74,6 +75,12 @@ class DatePicker {
     return calendarHtml;
   }
 
+  inputDate() {
+    eventEmitter.on('dateSelected', function (selectedDate) {
+      this.dateInput.value = selectedDate;
+    }.bind(this));
+  }
+
   setup() {
     let calendar = this.createCalendarHtml();
     let calendarToggle = document.createElement('button');
@@ -86,6 +93,8 @@ class DatePicker {
 
     this.dateInput.parentElement.appendChild(calendarToggle);
     this.dateInput.parentElement.appendChild(calendar);
+
+    this.inputDate();
   }
 
   toggleCalendar(calendarEl) {

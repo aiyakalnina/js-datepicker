@@ -1,4 +1,6 @@
-export { CalendarMonthView };
+import { eventEmitter } from './event-emitter.js';
+
+export { CalendarMonthView }; 
 
 class CalendarMonthView {
   constructor(month) {
@@ -25,7 +27,7 @@ class CalendarMonthView {
       dayCell.addEventListener('click', function (e) {
         let selectedCell = e.target.closest('.datepicker__day');
         let selectedDate = selectedCell.getAttribute('data-date');
-        console.log(selectedDate);
+        eventEmitter.emit('dateSelected', selectedDate);
       });
 
       dayCells.push(dayCell);
