@@ -75,11 +75,15 @@ $nav-height: 40px;
 
 .datepicker__day {
   background-color: #fff;
+  cursor: pointer;
 }
 
 .datepicker__day.is-active {
-  background-color: #B2B1CF;
+  background-color: #D3C4E3;
+}
 
+.datepicker__day.is-selected {
+  background-color: #B2B1CF;
 }
 
 .datepicker__month-title {

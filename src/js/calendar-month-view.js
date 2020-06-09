@@ -1,6 +1,6 @@
 import { eventEmitter } from './event-emitter.js';
 
-export { CalendarMonthView }; 
+export { CalendarMonthView };
 
 class CalendarMonthView {
   constructor(month) {
@@ -28,6 +28,11 @@ class CalendarMonthView {
         let selectedCell = e.target.closest('.datepicker__day');
         let selectedDate = selectedCell.getAttribute('data-date');
         eventEmitter.emit('dateSelected', selectedDate);
+
+        dayCells.forEach((cell) => {
+          cell.classList.remove('is-selected');
+        })
+        selectedCell.classList.add('is-selected');
       });
 
       dayCells.push(dayCell);
