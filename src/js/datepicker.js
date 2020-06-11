@@ -8,7 +8,6 @@ class DatePicker {
     this.today = new Date();
     this.currentMonthIndex = this.today.getMonth();
     this.currentYear = this.today.getFullYear();
-    this.calendar;
   }
 
   createCalendarHtml() {
@@ -76,27 +75,27 @@ class DatePicker {
     return calendarHtml;
   }
 
-  inputDate() {
+  inputDate(calendarHtml) {
     eventEmitter.on('dateSelected', function (selectedDate) {
       this.dateInput.value = selectedDate;
-      this.toggleCalendar(this.calendar);
+      this.toggleCalendar(calendarHtml);
     }.bind(this));
   }
 
   setup() {
-    this.calendar = this.createCalendarHtml();
+    let calendar = this.createCalendarHtml();
     let calendarToggle = document.createElement('button');
     calendarToggle.setAttribute.type = 'button';
     calendarToggle.textContent = 'Choose';
     calendarToggle.classList.add('btn', 'btn-secondary', 'btn-short');
     calendarToggle.addEventListener('click', function () {
-      this.toggleCalendar(this.calendar);
+      this.toggleCalendar(calendar);
     }.bind(this));
 
     this.dateInput.parentElement.appendChild(calendarToggle);
-    this.dateInput.parentElement.appendChild(this.calendar);
+    this.dateInput.parentElement.appendChild(calendar);
 
-    this.inputDate();
+    this.inputDate(calendar);
   }
 
   toggleCalendar(calendarEl) {
