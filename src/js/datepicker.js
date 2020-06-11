@@ -1,5 +1,6 @@
 import { CalendarMonth } from './calendar-month.js';
 import { CalendarMonthView } from './calendar-month-view.js';
+import { eventEmitter } from './event-emitter.js';
 
 class DatePicker {
   constructor(id) {
@@ -74,18 +75,27 @@ class DatePicker {
     return calendarHtml;
   }
 
+  inputDate(calendarHtml) {
+    eventEmitter.on('dateSelected', function (selectedDate) {
+      this.dateInput.value = selectedDate;
+      this.toggleCalendar(calendarHtml);
+    }.bind(this));
+  }
+
   setup() {
     let calendar = this.createCalendarHtml();
     let calendarToggle = document.createElement('button');
     calendarToggle.setAttribute.type = 'button';
     calendarToggle.textContent = 'Choose';
     calendarToggle.classList.add('btn', 'btn-secondary', 'btn-short');
-    calendarToggle.addEventListener('click', () => (
-      this.toggleCalendar(calendar)
-    ));
+    calendarToggle.addEventListener('click', function () {
+      this.toggleCalendar(calendar);
+    }.bind(this));
 
     this.dateInput.parentElement.appendChild(calendarToggle);
     this.dateInput.parentElement.appendChild(calendar);
+
+    this.inputDate(calendar);
   }
 
   toggleCalendar(calendarEl) {
